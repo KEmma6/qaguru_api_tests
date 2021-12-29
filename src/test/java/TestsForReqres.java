@@ -74,8 +74,8 @@ public class TestsForReqres {
                 .statusCode(200)
                .extract().response();
 
-        assertThat((String) response.path("name")).isEqualTo(name);
-        assertThat((String) response.path("job")).isEqualTo(job);
+        assertThat(response.path("name").toString()).isEqualTo(name);
+        assertThat(response.path("job").toString()).isEqualTo(job);
     }
 
     @Test

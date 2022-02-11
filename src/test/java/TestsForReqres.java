@@ -1,10 +1,13 @@
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static filters.CustomLogFilter.customLogFilter;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -18,18 +21,19 @@ public class TestsForReqres {
     @Test
     void testForGetInfoAboutUser(){
         given()
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("api/user/2")
                 .then()
                 .statusCode(200)
                 .body("data.id", is(2))
-                .body("data.first_name", is("Janet"))
-                .body("data.last_name", is("Weaver"));
+                .body("data.name", is("fuchsia rose"));
     }
 
     @Test
     void testForGetResourceNotFound(){
         given()
+                .filter(customLogFilter().withCustomTemplates())
                 .when()
                 .get("/api/unknown/23")
                 .then()
@@ -45,6 +49,7 @@ public class TestsForReqres {
                 "}";
 
         given()
+                .filter(customLogFilter().withCustomTemplates())
                 .contentType(JSON)
                 .body(data)
                 .when()
@@ -81,8 +86,22 @@ public class TestsForReqres {
     @Test
     void testForDeleteUser(){
         given()
+                .filter(customLogFilter().withCustomTemplates())
                 .delete("api/users/2")
                 .then()
                 .statusCode(204);
+    }
+
+    @Test
+    void testForGetInfoAboutUserWithSchema(){
+        given()
+                .filter(customLogFilter().withCustomTemplates())
+                .when()
+                .log().all()
+                .get("api/user/2")
+                .then()
+                .statusCode(200)
+                .body(matchesJsonSchemaInClasspath("schemas/schemaForApiTestGetInfoAboutUser.json"))
+                .body("data.id", is(2));
     }
 }

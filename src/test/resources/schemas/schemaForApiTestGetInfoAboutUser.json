@@ -1,0 +1,146 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [
+        {
+            "data": {
+                "id": 2,
+                "name": "fuchsia rose",
+                "year": 2001,
+                "color": "#C74375",
+                "pantone_value": "17-2031"
+            },
+            "support": {
+                "url": "https://reqres.in/#support-heading",
+                "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
+            }
+        }
+    ],
+    "required": [
+        "data",
+        "support"
+    ],
+    "properties": {
+        "data": {
+            "$id": "#/properties/data",
+            "type": "object",
+            "title": "The data schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "id": 2,
+                    "name": "fuchsia rose",
+                    "year": 2001,
+                    "color": "#C74375",
+                    "pantone_value": "17-2031"
+                }
+            ],
+            "required": [
+                "id",
+                "name",
+                "year",
+                "color",
+                "pantone_value"
+            ],
+            "properties": {
+                "id": {
+                    "$id": "#/properties/data/properties/id",
+                    "type": "integer",
+                    "title": "The id schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        2
+                    ]
+                },
+                "name": {
+                    "$id": "#/properties/data/properties/name",
+                    "type": "string",
+                    "title": "The name schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "fuchsia rose"
+                    ]
+                },
+                "year": {
+                    "$id": "#/properties/data/properties/year",
+                    "type": "integer",
+                    "title": "The year schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": 0,
+                    "examples": [
+                        2001
+                    ]
+                },
+                "color": {
+                    "$id": "#/properties/data/properties/color",
+                    "type": "string",
+                    "title": "The color schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "#C74375"
+                    ]
+                },
+                "pantone_value": {
+                    "$id": "#/properties/data/properties/pantone_value",
+                    "type": "string",
+                    "title": "The pantone_value schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "17-2031"
+                    ]
+                }
+            },
+            "additionalProperties": true
+        },
+        "support": {
+            "$id": "#/properties/support",
+            "type": "object",
+            "title": "The support schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": {},
+            "examples": [
+                {
+                    "url": "https://reqres.in/#support-heading",
+                    "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
+                }
+            ],
+            "required": [
+                "url",
+                "text"
+            ],
+            "properties": {
+                "url": {
+                    "$id": "#/properties/support/properties/url",
+                    "type": "string",
+                    "title": "The url schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "https://reqres.in/#support-heading"
+                    ]
+                },
+                "text": {
+                    "$id": "#/properties/support/properties/text",
+                    "type": "string",
+                    "title": "The text schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": "",
+                    "examples": [
+                        "To keep ReqRes free, contributions towards server costs are appreciated!"
+                    ]
+                }
+            },
+            "additionalProperties": true
+        }
+    },
+    "additionalProperties": true
+}

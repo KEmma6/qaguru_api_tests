@@ -1,5 +1,6 @@
 import com.codeborne.selenide.Configuration;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.DisplayName;
 import org.openqa.selenium.Cookie;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static filters.CustomLogFilter.customLogFilter;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 
@@ -20,10 +22,13 @@ public class TestDemowebshop {
     }
 
     @Test
+    @DisplayName("Создание отзыва на товар")
     void leaveReviewOnProductTest() {
         step("Авторизация на сайте и полученение кук", () -> {
                     String authorizationCookie =
                             given()
+                                    .filter(customLogFilter().withCustomTemplates())
+                                    .log().uri()
                                     .contentType("application/x-www-form-urlencoded; charset=UTF-8")
                                     .formParam("Email", "tttt@mail.ru")
                                     .formParam("Password", "tttt66")

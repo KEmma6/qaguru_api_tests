@@ -1,5 +1,6 @@
 import com.codeborne.selenide.Configuration;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.openqa.selenium.Cookie;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,6 +24,7 @@ public class TestDemowebshop {
 
     @Test
     @DisplayName("Создание отзыва на товар")
+    @Disabled
     void leaveReviewOnProductTest() {
         step("Авторизация на сайте и полученение кук", () -> {
                     String authorizationCookie =

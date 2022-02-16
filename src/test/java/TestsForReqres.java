@@ -7,7 +7,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 
 public class TestsForReqres {
@@ -128,19 +128,4 @@ public class TestsForReqres {
         assertThat(resourceForReqres.getData().get(indexResource).getId()).isEqualTo(2);
 
     }
-
-//    @Test
-//    void singleUserWithLombokModel() {
-//        // @formatter:off
-//        LombokUserData data = given()
-//                .spec(request)
-//                .when()
-//                .get("/users/2")
-//                .then()
-//                .spec(responseSpec)
-//                .log().body()
-//                .extract().as(LombokUserData.class);
-//        // @formatter:on
-//        assertEquals(2, data.getUser().getId());
-//    }
 }

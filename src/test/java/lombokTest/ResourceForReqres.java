@@ -1,15 +1,16 @@
-package lombok;
+package lombokTest;
 
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.List;
 
+@lombok.Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResourceForReqres {
-    @Data
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private List<Integer> id;
-    private List<String> name;
-    private List<Integer> year;
+    private List<Datum> data;
     @JsonProperty ("pantone_value")
     private List<String> pantoneValue;
 }
+
+
+

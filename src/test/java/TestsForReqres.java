@@ -1,5 +1,5 @@
 import io.restassured.response.Response;
-import lombok.ResourceForReqres;
+import lombokTest.ResourceForReqres;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -115,6 +115,9 @@ public class TestsForReqres {
 
     @Test
     void testForGetListOfUsersWithLombok(){
+
+        int indexResource = 1;
+
         ResourceForReqres resourceForReqres = given()
                 .spec(Specs.requestSpecificationForReqres)
                 .get("users?page=1")
@@ -122,7 +125,7 @@ public class TestsForReqres {
                 .spec(Specs.responseSpecificationForReqres)
                 .extract().as(ResourceForReqres.class);
 
-        assertThat(resourceForReqres);
+        assertThat(resourceForReqres.getData().get(indexResource).getId()).isEqualTo(2);
 
     }
 

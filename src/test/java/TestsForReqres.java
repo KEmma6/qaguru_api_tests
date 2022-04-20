@@ -1,30 +1,25 @@
-import io.qameta.allure.restassured.AllureRestAssured;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
+import lombokTest.ResourceForReqres;
 import org.junit.jupiter.api.Test;
 
-import static filters.CustomLogFilter.customLogFilter;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 import static org.hamcrest.Matchers.*;
 
-public class TestsForReqres {
 
-    @BeforeAll
-    static void setUp(){
-        RestAssured.baseURI = "https://reqres.in/";
-    }
+
+public class TestsForReqres {
 
     @Test
     void testForGetInfoAboutUser(){
         given()
-                .filter(customLogFilter().withCustomTemplates())
+                .spec(Specs.requestSpecificationForReqres)
                 .when()
-                .get("api/user/2")
+                .get("user/2")
                 .then()
+                .spec(Specs.responseSpecificationForReqres)
                 .statusCode(200)
                 .body("data.id", is(2))
                 .body("data.name", is("fuchsia rose"));
@@ -33,10 +28,11 @@ public class TestsForReqres {
     @Test
     void testForGetResourceNotFound(){
         given()
-                .filter(customLogFilter().withCustomTemplates())
+                .spec(Specs.requestSpecificationForReqres)
                 .when()
-                .get("/api/unknown/23")
+                .get("unknown/23")
                 .then()
+                .spec(Specs.responseSpecificationForReqres)
                 .statusCode(404)
                 .body(equalTo("{}"));
     }
@@ -49,12 +45,12 @@ public class TestsForReqres {
                 "}";
 
         given()
-                .filter(customLogFilter().withCustomTemplates())
-                .contentType(JSON)
+                .spec(Specs.requestSpecificationForReqres)
                 .body(data)
                 .when()
-                .post("api/register")
+                .post("register")
                 .then()
+                .spec(Specs.responseSpecificationForReqres)
                 .statusCode(400)
                 .body("error", is("Missing password"));
     }
@@ -71,13 +67,14 @@ public class TestsForReqres {
                 "}";
 
        Response response = given()
-                .contentType(JSON)
+                .spec(Specs.requestSpecificationForReqres)
                 .body(data)
                 .when()
-                .patch("api/users/2")
+                .patch("users/2")
                 .then()
                 .statusCode(200)
-               .extract().response();
+                .spec(Specs.responseSpecificationForReqres)
+                .extract().response();
 
         assertThat(response.path("name").toString()).isEqualTo(name);
         assertThat(response.path("job").toString()).isEqualTo(job);
@@ -86,22 +83,49 @@ public class TestsForReqres {
     @Test
     void testForDeleteUser(){
         given()
-                .filter(customLogFilter().withCustomTemplates())
-                .delete("api/users/2")
+                .spec(Specs.requestSpecificationForReqres)
+                .delete("users/2")
                 .then()
+                .spec(Specs.responseSpecificationForReqres)
                 .statusCode(204);
     }
 
     @Test
     void testForGetInfoAboutUserWithSchema(){
         given()
-                .filter(customLogFilter().withCustomTemplates())
+                .spec(Specs.requestSpecificationForReqres)
                 .when()
-                .log().all()
-                .get("api/user/2")
+                .get("user/2")
                 .then()
+                .spec(Specs.responseSpecificationForReqres)
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/schemaForApiTestGetInfoAboutUser.json"))
                 .body("data.id", is(2));
+    }
+
+    @Test
+    void testForGetListOfUsersWithGPath(){
+        given()
+                .spec(Specs.requestSpecificationForReqres)
+                .get("users?page=1")
+                .then()
+                .body("data.findAll{it.id}.id", hasSize(6))
+                .body("data.findAll{it.last_name.contains('W')}.last_name.flatten()", hasSize(2));
+    }
+
+    @Test
+    void testForGetListOfUsersWithLombok(){
+
+        int indexResource = 1;
+
+        ResourceForReqres resourceForReqres = given()
+                .spec(Specs.requestSpecificationForReqres)
+                .get("users?page=1")
+                .then()
+                .spec(Specs.responseSpecificationForReqres)
+                .extract().as(ResourceForReqres.class);
+
+        assertThat(resourceForReqres.getData().get(indexResource).getId()).isEqualTo(2);
+
     }
 }
